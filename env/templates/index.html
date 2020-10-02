@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block body %}
+
+<div id='toolbar'>
+<table>
+<tr>
+<td>
+    <h4>Zoom</h4>
+    <button class='act' name='More'>+</button>
+    <button class='act' name='Less'>-</button>
+  </td>
+  
+  <td class='actions'> 
+
+    <h4>Actions</h4>
+    <input id="inputn" name='maximum' type='number' width=10px value={{ data.n }} >
+    <select id="algorithm">
+      <option value="a">Algorithm A</option>
+        <option value="b">Algorithm B</option>
+
+      </option>
+    </select>
+    <button class='act' name='New'>New</button>
+    <button class='act' name='Add'>Add</button>
+    <button class='act' name='AddBiased'>Add Biased</button>
+    <button class='act' name='Recommend'>Recommend</button>
+    <button class='act' name='Reject'>Reject</button>
+    <button class='act' name='Accept'>Accept</button>
+  </td>  
+    
+  </tr>
+    
+  </table>
+</div>
+
+<div class='map' id="locate_diagram"></div>
+
+<div class = 'history'>
+  {{ data.message }}
+</div>
+
+
+
+<!-- the scripts below handle the actions -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(function() {
+    $(document).on('click', 'button[name=More]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'more'},
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+$(function() {
+    $(document).on('click', 'button[name=Less]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'less'},
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});  
+$(function() {
+    $(document).on('click', 'button[name=New]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'new'},
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+
+$(function() {
+    $(document).on('click', 'button[name=Add]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'add', n: $("#inputn").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+
+$(function() {
+    $(document).on('click', 'button[name=AddBiased]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'addbiased', n: $("#inputn").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+$(function() {
+    $(document).on('click', 'button[name=Recommend]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'recommend', n: $("#inputn").val(), algorithm: $("#algorithm").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+
+$(function() {
+    $(document).on('click', 'button[name=Accept]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'accept', n: $("#inputn").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+$(function() {
+    $(document).on('click', 'button[name=Reject]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'reject', n: $("#inputn").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
+
+</script>
+
+{% endblock %}
