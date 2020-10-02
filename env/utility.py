@@ -7,7 +7,7 @@ from enum import Enum
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from models import Actor, Element, Status, Location, scale, Settings, get_adjacent, ElementList
- 
+
 ##############################################################################
 ## Actions that can be initiated by the interface or a simulation
 

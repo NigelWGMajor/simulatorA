@@ -8,7 +8,6 @@ from matplotlib.figure import Figure
 from models import Actor, Element, Status, Settings, Data
 from utility import *  #rgb_to_hex, init_actor, do_plot
 
-
 app =  Flask(__name__)
 
 actor:Actor = do_new_case()
