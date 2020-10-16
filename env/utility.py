@@ -1,4 +1,5 @@
 import io
+from os import mkdir, path
 import math
 import random
 from flask import Flask, Response, render_template, request
@@ -11,7 +12,17 @@ from models import Actor, Element, Status, Location, scale, Settings, get_adjace
 ##############################################################################
 ## Actions that can be initiated by the interface or a simulation
 
-def do_new_case():
+caseCount = 0
+cycleCount = 0
+title = ""
+
+def do_new_case(caseName):
+    global caseCount
+    global cycleCount
+    global title
+    title = caseName
+    caseCount += 1
+    cyclecount = 1
     return Actor()
 
 def do_recommend(actor: Actor, algorithm, n):
@@ -105,14 +116,42 @@ def do_reject_recommendation(actor, n: int):
         n -= 1
     return actor
 
+def do_cycle(actor, n:int, p: int, algorithm, caseName):
+    global cycleCount
+    global title
+    title = caseName
+    cycleCount += 1
+    while n > 0:
+        if len(actor.Elements) == 0:
+            actor = do_new_case()
+        actor = do_add_element_biased(actor, 1)
+        actor = do_recommend(actor, algorithm, 1)
+        x = random.randint(0, 100)
+        if x <= p:
+            do_accept_recommendation(actor, 1)
+        n -= 1
+    return actor 
 ##############################################################################
 ## PRESENTATION STUFF
 
 def do_plot(actor: Actor):
+    global caseCount
+    global cycleCount
+    
     fig = show_ternary(actor)
     xoutput = io.BytesIO()
     FigureCanvas(fig).print_png(xoutput)
-    return Response(xoutput.getvalue(), mimetype='image/png')
+    ## write png files 
+    if path.isdir("data") == False:
+        mkdir("data")
+    if path.isdir("data\\" + title) == False:
+        mkdir("data\\" + title)
+    current = "data\\" + title + "\sim" + str(1000*caseCount + cycleCount) + ".png"
+    image = xoutput.getvalue()
+    with open(current, 'wb') as out:
+        out.write(image)
+    ## continue to render
+    return Response(image, mimetype='image/png')
 
 def show_ternary(actor: Actor):
     global quantize
