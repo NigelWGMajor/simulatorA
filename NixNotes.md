@@ -8,11 +8,11 @@ When we have at least one selection, we recommend others according to some algor
 
 The actor can ignore, accept or actively reject any of these
 
-To model preference, ther is built-in aversion and attraction. So one corner is avoided, one is more actively sought, and one is neutral. This only applies to NEW selections made using the Add Biased button: red is avoided, green is favored nbd blue is neutral. This can be used to verify that the recommendations evolve approriately. 
+To model preference, there is built-in aversion and attraction. The red corner is avoided, green is more actively sought, and blue is neutral. This only applies to NEW selections made using the Add Biased button: Cycle mode always uses the biased add. This can be used to verify that the recommendations evolve approriately in relation to the biased field of selections.
 
 In the evolution, we would expect the actor to gradually explore most of the green area, some of the blue area and less of the red area. We would also want out recommendations to be somewhat matching this pattern over time.
 
-The prior recommendations leave a trace, so that it is possible to read the pattern of multiple recommendations.
+The prior recommendations leave a trace, so that it is possible to read the pattern of multiple recommendations: the darke the gray, the more frequently that recommendation has been made - we would prefer more recommendations rather than more repeats.
 
 Currently two scenarios are available.
 

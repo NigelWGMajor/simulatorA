@@ -10,17 +10,23 @@
 <div id='toolbar'>
 <table>
 <tr>
-<td>
+  <td>
     <h4>Zoom</h4>
     <button class='act' name='More'>+</button>
     <button class='act' name='Less'>-</button>
   </td>
-  
   <td class='actions'> 
-
     <h4>Actions</h4>
-    <input id="inputn" name='maximum' type='number' width=10px value={{ data.n }} >
-    <select id="algorithm">
+    <input padding='10px' width='100px' id='caseName' value='{{data.caseName }}'/>
+    <label padding='10px' width='50px' for='inputp'>Prob: </label>
+    <input id='inputp' name='proportion' type='number' value='{{ data.p }}' title="% Probability of accepting recommendations (0-100)"/>
+    <button class='act' name='Cycle' width='50px' title="run an add->recommend->accept-or-add->recommend">Cycle</button>
+  </td>
+  <td>
+    <h4>Diagnostics</h4>
+    <label padding='10px' width='50px' for='inputn'>Count: </label>
+    <input id='inputn' name='maximum' type='number' value='{{ data.n }}' title="Number of times to iterate"/>
+    <select id="algorithm" title="A: Original B: Test">
       <option value="a">Algorithm A</option>
         <option value="b">Algorithm B</option>
 
@@ -80,7 +86,7 @@ $(function() {
         $.ajax({
       url: "/test",
       type: "get",
-      data: {jsdata: 'new'},
+      data: {jsdata: 'new', caseName: $('#caseName').val() },
       success: function(response) {
         $("#locate_diagram").html(response);
       },
@@ -150,7 +156,18 @@ $(function() {
     });
     })
 });
-
+$(function() {
+    $(document).on('click', 'button[name=Cycle]', function(e) {
+        $.ajax({
+      url: "/test",
+      type: "get",
+      data: {jsdata: 'cycle', n: $("#inputn").val(), p: $("#inputp").val(), algorithm: $("#algorithm").val(), caseName: $("#caseName").val() },
+      success: function(response) {
+        $("#locate_diagram").html(response);
+      },
+    });
+    })
+});
 </script>
 
 {% endblock %}

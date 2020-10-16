@@ -10,11 +10,11 @@ from utility import *  #rgb_to_hex, init_actor, do_plot
 
 app =  Flask(__name__)
 
-actor:Actor = do_new_case()
+actor:Actor = do_new_case("NewCase")
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    data = Data(n=3, text="hello world")
+    data = Data(n=1, p=20, caseName = 'TestOne')
     return render_template('index.html', data=data)
 
 @app.route('/plot.png')
@@ -29,15 +29,20 @@ def test():
 
     action = request.args.get('jsdata')
     s = request.args.get('n')
+    t = request.args.get('p')
     algorithm = request.args.get('algorithm')
-    
+    caseName = request.args.get('caseName')
     if s is None:
         n = 1
     else:
         n = int(s)
-          
+    if t is None:
+        p = 50
+    else:
+        p = int(t)
+    
     if action == 'new':
-        actor = do_new_case()
+        actor = do_new_case(caseName)
     elif action == 'add':
         actor = do_add_element(actor, n)
     elif action == 'addbiased':
@@ -52,6 +57,8 @@ def test():
         Settings.quantize_more()
     elif action == 'less':
         Settings.quantize_less()       
+    elif action == 'cycle':
+        actor = do_cycle(actor, n, p, algorithm, caseName)
     return render_template('summary.html')
 
 # prevent caching of the diagram

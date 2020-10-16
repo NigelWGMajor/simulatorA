@@ -256,39 +256,11 @@ class Actor:
             return x[0]
         return None
     
-##   def add_Element(self, location: Location, state: Status):
-##       if state != Status.ACCEPTED and state != Status.REJECTED:
-##           if not self.get_Element_at_location(location) is None:
-##               # if there is already an element at that position, do nothing.
-##               return self
-##           if state == Status.NEW:
-##               # turn all old news into owned
-##               for element in self.Elements:
-##                   if element.state == Status.NEW:
-##                       element.state = Status.OWNED
-##               element = Element(location, state)
-##               self.Elements.append(element) 
-##               self.make_recommendations_stale()
-##           elif state == Status.RECOMMENDED:
-##               element = Element(location, state)
-##               element.recommendationCount += 1
-##               self.Elements.append(element) 
-##       elif state == Status.ACCEPTED or state == Status.DECLINED:
-##           x = get_Element_at_location(location)
-##           x.state = state
-##       return self
-##
-##   def make_recommendations_stale(self):
-##       recommended = [element for element in self.Elements if element.state == Status.RECOMMENDED]
-##       for element in recommended:
-##           element.state = Status.STALE
-##       return self
-
- # Control resolution to specific bucket sizes
+# Control resolution to specific bucket sizes
 class Settings:
     # quantize boundaries
     bucket = [6,8,9,10,15,18,20,24,30,36,40,45,60,72,90]
-    quantizeIndex = 8
+    quantizeIndex = 5
     def quantize_more():
         if Settings.quantizeIndex < len(Settings.bucket) - 1:
             Settings.quantizeIndex += 1
@@ -300,10 +272,10 @@ class Settings:
 
 # Used to exchange data with the UI
 class Data:
-    def __init__(self, n:int, text: str):
+    def __init__(self, n:int, p: int, caseName):
         self.n = n
-        self.text = text
-
+        self.p = p
+        self.caseName = caseName
 ############################################################################################
 ## Adjacency calculations
     

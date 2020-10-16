@@ -32,3 +32,6 @@ h4 {
     color: white;
     margin: 20;
 }
+input[type=number]{
+    width: 80px;
+} 
