@@ -46,4 +46,4 @@ graph TD
 
 The images will be saved in a folder relative to the project root `data\<case name>` where the case name is the name from the interface.
 
-Files are named simX00Y.png where X is incremented with each New, and Y is incremented with each cyccle.
+Files are named simX00Y.png where X is incremented with each New, and Y is incremented with each cycle.
