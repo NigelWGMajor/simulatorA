@@ -1,4 +1,4 @@
-# Spike A
+# Simulation A
 
 Visualization:
 
