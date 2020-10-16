@@ -1,8 +1,10 @@
 # Simulator
 
+This is intended to provide simulation of an actor selecting elements from a field of colors. 
+
 When we have at least one selection, we recommend others according to some algorithm based on similarity.
 
-The actor can ignore, accept or actively reject any of these
+The actor can ignore, accept or actively reject any of these, and we an state a probability for this.
 
 To model preference, there is built-in aversion and attraction. The red corner is avoided, green is more actively sought, and blue is neutral. This only applies to NEW selections made using the Add Biased button: Cycle mode always uses the biased add. This can be used to verify that the recommendations evolve approriately in relation to the biased field of selections.
 
