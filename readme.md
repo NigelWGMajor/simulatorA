@@ -14,6 +14,25 @@ The prior recommendations leave a trace, so that it is possible to read the patt
 
 Currently two scenarios are available.
 
+# Recent modifications
+
+Simplified workflow to generate videos of scenarios
+
+- Enter the scenarion name
+- Select the algorithm to use
+- click New this will create a folder under "data" with the name you entered
+- manually generate items, cycle or set a number of repeats (<20 at a time because of memry issues) and cycle
+- When you have enough data, click Make Video and your scenario snapshots will be made into a video in the data folder.
+- The program does not at this stage delete files: you may want to do that though!
+
+# possible enhancement:
+
+- have the last file copied to the data folder as a single image with the correct name
+- do some displaosal on the fly
+- add a New Cycle or clear button to start a new scenario.
+- provide some stats: number of elements, something to indicate max number of repeated recomendations
+
+
 ## How to Launch
 
 Load from the project folder into vscode.
