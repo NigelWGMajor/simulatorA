@@ -1,12 +1,14 @@
 import io
-from os import mkdir, path
+import os
+# os import mkdir, path, listdir
+import cv2
 import math
 import random
 from flask import Flask, Response, render_template, request
 import ternary
 from enum import Enum
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
+from matplotlib import *
 from models import Actor, Element, Status, Location, scale, Settings, get_adjacent, ElementList
 
 ##############################################################################
@@ -15,6 +17,7 @@ from models import Actor, Element, Status, Location, scale, Settings, get_adjace
 caseCount = 0
 cycleCount = 0
 title = ""
+local_path = "data\\"
 
 def do_new_case(caseName):
     global caseCount
@@ -120,8 +123,8 @@ def do_cycle(actor, n:int, p: int, algorithm, caseName):
     global cycleCount
     global title
     title = caseName
-    cycleCount += 1
     while n > 0:
+        cycleCount += 1
         if len(actor.Elements) == 0:
             actor = do_new_case()
         actor = do_add_element_biased(actor, 1)
@@ -129,6 +132,8 @@ def do_cycle(actor, n:int, p: int, algorithm, caseName):
         x = random.randint(0, 100)
         if x <= p:
             do_accept_recommendation(actor, 1)
+        if n > 1:
+          renderImage(actor)
         n -= 1
     return actor 
 ##############################################################################
@@ -137,21 +142,27 @@ def do_cycle(actor, n:int, p: int, algorithm, caseName):
 def do_plot(actor: Actor):
     global caseCount
     global cycleCount
+    ##pyplot.close('all')
+    image = renderImage(actor)
     
+    return Response(image, mimetype='image/png')
+
+def renderImage(actor):
     fig = show_ternary(actor)
     xoutput = io.BytesIO()
     FigureCanvas(fig).print_png(xoutput)
+    fig = None
+    
     ## write png files 
-    if path.isdir("data") == False:
-        mkdir("data")
-    if path.isdir("data\\" + title) == False:
-        mkdir("data\\" + title)
-    current = "data\\" + title + "\sim" + str(1000*caseCount + cycleCount) + ".png"
+    if os.path.isdir(local_path) == False:
+        os.mkdir(local_path)
+    if os.path.isdir(local_path + title) == False:
+        os.mkdir(local_path + title)
+    current = local_path + title + "\sim" + str(1000*caseCount + cycleCount) + ".png"
     image = xoutput.getvalue()
     with open(current, 'wb') as out:
         out.write(image)
-    ## continue to render
-    return Response(image, mimetype='image/png')
+    return image
 
 def show_ternary(actor: Actor):
     global quantize
@@ -214,10 +225,31 @@ def show_ternary(actor: Actor):
     recommended = [Element.location for Element in actor.Elements if Element.state == Status.RECOMMENDED] 
     for p in recommended:
         q = [p.coordinates()]
-        tax.plot(q, marker='*', color="yellow", markersize=size, alpha=1.0,
-                 markeredgecolor='black', markeredgewidth=1.0 )  
+        tax.plot(q, marker='*', color="yellow", markersize=size, alpha= 0.8)  
     return figure 
 
 # convert (x, y, z) to associated rgb value
 def rgb_to_hex(rgb):
     result = '#' + ''.join('{:02X}'.format(abs(int(x))) for x in rgb)
+
+
+def make_video():
+    global local_path
+    global title
+    image_folder = local_path + title
+    video_name = local_path + title + '_video.mp4'
+
+    images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+    frame = cv2.imread(os.path.join(image_folder, images[0]))
+    height, width, layers = frame.shape
+    # (name, FourCC code, fps, size)
+    # 0 = avi
+    
+    video = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), 4, (width,height))
+
+    for image in images:
+        video.write(cv2.imread(os.path.join(image_folder, image)))
+
+    cv2.destroyAllWindows()
+    video.release()
+    os.system(video_name)

@@ -59,6 +59,8 @@ def test():
         Settings.quantize_less()       
     elif action == 'cycle':
         actor = do_cycle(actor, n, p, algorithm, caseName)
+    elif action == 'video':
+        make_video()
     return render_template('summary.html')
 
 # prevent caching of the diagram

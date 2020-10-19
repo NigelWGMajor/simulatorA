@@ -21,6 +21,8 @@
     <label padding='10px' width='50px' for='inputp'>Prob: </label>
     <input id='inputp' name='proportion' type='number' value='{{ data.p }}' title="% Probability of accepting recommendations (0-100)"/>
     <button class='act' name='Cycle' width='50px' title="run an add->recommend->accept-or-add->recommend">Cycle</button>
+    <button class='act' name='Video' width='50px' title="Make the current set of images into a video">Make Video</button>
+    
   </td>
   <td>
     <h4>Diagnostics</h4>
@@ -168,6 +170,17 @@ $(function() {
     });
     })
 });
+$(function() {
+  $(document).on('click', 'button[name=Video]', function(e) {
+      $.ajax({
+    url: "/test",
+    type: "get",
+    data: {jsdata: 'video', caseName: $("#caseName").val() },
+    success: function(response) {
+      $("#locate_diagram").html(response);
+    },
+  });
+  })
+});
 </script>
-
 {% endblock %}
